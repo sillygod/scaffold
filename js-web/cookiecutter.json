@@ -1,0 +1,6 @@
+{
+    "project_name": "web application",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "author": "Anonymous",
+    "_extensions": ["jinja2_base64_filters.Base64Filters"]
+}

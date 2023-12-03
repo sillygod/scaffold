@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "target": "ESNext",
+    "module": "ESNext" /* Specify what module code is generated. */,
+    "esModuleInterop": false /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": true /* Not to produce the js file if found error */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "allowJs": false,
+    "lib": ["DOM", "ESNext", "DOM.Iterable"] /* what does this do? */,
+    "removeComments": true
+  },
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "examples", "dist"]
+}

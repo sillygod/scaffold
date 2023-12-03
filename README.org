@@ -1,0 +1,15 @@
+* Scaffold
+
+  this is a multi language project starter kit which powered by cookiecutter.
+  https://cookiecutter.readthedocs.io/en/2.3.0/advanced/directories.html
+
+  naming of subdirectory is {program language}-{application type}(optional)
+
+  ex. application type
+  cli
+  web
+  sdk
+  lib
+  etc..
+
+  cookiecutter https://github.com/user/repo-name.git --directory="directory1-name"
