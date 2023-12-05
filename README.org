@@ -6,10 +6,12 @@
   naming of subdirectory is {program language}-{application type}(optional)
 
   ex. application type
-  cli
-  web
-  sdk
-  lib
+
+  - cli
+  - web
+  - sdk
+  - lib
+
   etc..
 
   cookiecutter https://github.com/user/repo-name.git --directory="directory1-name"

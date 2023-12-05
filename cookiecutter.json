@@ -1,0 +1,6 @@
+{
+    "template": [
+        "js sdk (./js-sdk)",
+        "js-web (./js-web)"
+    ]
+}
