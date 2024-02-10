@@ -1,6 +1,7 @@
 {
     "template": [
         "js sdk (./js-sdk)",
-        "js-web (./js-web)"
+        "js web (./js-web)",
+        "py base (./py-base)"
     ]
 }

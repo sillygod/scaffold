@@ -1,0 +1,10 @@
+* {{ cookiecutter.project_name }}
+
+** POETRY_VIRTUALENVS_IN_PROJECT
+   If you want to install the virtualenv in the project's local. set this env to True or =poetry config --local virtualenvs.in-project true=
+
+** update the pre-commit hook repos
+
+   #+begin_src bash
+     pre-commit autoupdate
+   #+end_src

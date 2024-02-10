@@ -1,0 +1,1 @@
+ https://cookiecutter.readthedocs.io/en/stable/advanced/local_extensions.html
