@@ -1,0 +1,57 @@
+# for ci-athena project
+version: '3.9'
+services:
+
+  {{ cookiecutter.project_name }}:
+    restart: always
+    image: {{ cookiecutter.project_name }}
+    build:
+      dockerfile: ./dockerfiles/dev.dockerfile
+    ports:
+      - "8080:8080"
+
+    env_file:
+      - ./env
+
+    networks:
+      - ci-{{ cookiecutter.project_name }}
+    depends_on:
+      - redis
+
+    volumes:
+      - .:/app/
+      - go-mod-data:/go/pkg/mod
+      - go-cache:/root/.cache
+
+  db:
+    restart: always
+    image: postgres:13-alpine
+    volumes:
+      - db-backup-data:/var/lib/postgresql/data
+    env_file:
+      - .dev
+    networks:
+      - ci-{{ cookiecutter.project_name }}
+    ports:
+      - "5432:5432"
+
+  redis:
+    restart: always
+    image: redis:6.2.4-alpine
+    volumes:
+      - redis-data:/data
+    networks:
+      - ci-{{ cookiecutter.project_name }}
+    ports:
+      - "6379:6379"
+
+
+networks:
+  ci-{{ cookiecutter.project_name }}:
+    driver: bridge
+
+volumes:
+  db-backup-data:  # db
+  redis-data:  # cache
+  go-mod-data:
+  go-cache:

@@ -1,6 +1,5 @@
 {
     "project_name": "js sdk",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
-    "author": "Anonymous",
-    "_extensions": [""]
+    "author": "Anonymous"
 }

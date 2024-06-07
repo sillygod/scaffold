@@ -2,6 +2,7 @@
     "template": [
         "js sdk (./js-sdk)",
         "js web (./js-web)",
-        "py base (./py-base)"
+        "py base (./py-base)",
+        "go web (./go-web)"
     ]
 }

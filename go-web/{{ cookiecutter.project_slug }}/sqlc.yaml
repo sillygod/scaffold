@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    queries: 
+     - "db/sqlc_querys/author_query.sql"
+     - "db/sqlc_querys/user_query.sql"
+
+    schema: 
+     - "db/schemas/author_schema.sql"
+     - "db/schemas/user_schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "db"

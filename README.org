@@ -3,6 +3,11 @@
   this is a multi language project starter kit which powered by cookiecutter.
   https://cookiecutter.readthedocs.io/en/2.3.0/advanced/directories.html
 
+  #+begin_src bash
+    pipx install cookiecutter
+    pipx inject cookiecutter jinja2_base64_filters (optional)
+  #+end_src
+
   naming of subdirectory is {program language}-{application type}(optional)
 
   ex. application type
@@ -14,4 +19,13 @@
 
   etc..
 
+** example usages
+
   cookiecutter https://github.com/user/repo-name.git --directory="directory1-name"
+  it's assumed the project scaffold contains multiple project so the director1-name is one of the project directory
+
+  Take my repo as an example. You can create a project like below
+
+  cookiecutter scaffold -o [output directory]
+
+  if you don't specify --directory, by default, you will get a prompt to select the option.
