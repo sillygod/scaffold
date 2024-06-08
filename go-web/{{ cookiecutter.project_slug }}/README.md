@@ -1,6 +1,6 @@
 # {{ cookiecutter.project_name }}
 
-## dev dependencies 
+## dev dependencies
 
 a nice database migration tool
 https://github.com/ariga/atlas
@@ -19,7 +19,6 @@ example usages
 
 ```sh
 atlas schema apply --url "sqlite://file.db"
-://file?mode=memory"
 ```
 
 {% raw %}
@@ -35,7 +34,7 @@ https://github.com/sqlc-dev/sqlc
 brew install sqlc
 ```
 
-## generate db schema 
+## generate db schema
 
 ```sh
 sqlc generate
