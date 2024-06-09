@@ -7,7 +7,24 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"go.uber.org/fx"
 )
+
+// AsRoute annotates the given function with the necessary group tag and types for
+// registering it as a handler in the fx application.
+//
+// Parameters:
+//   - f: the function to be annotated.
+//
+// Returns:
+//   - any: the annotated function.
+func AsRoute(f any) any {
+	return fx.Annotate(
+		f,
+		fx.As(new(handlers.Handler)),
+		fx.ResultTags(`group:"handlers"`),
+	)
+}
 
 func Health(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))

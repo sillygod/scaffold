@@ -16,7 +16,9 @@ env "local" {
 
   format {
     migrate {
+    {% raw %}
       diff = format("{{sql . \" \" }}")
+    {% endraw %}
     }
   }
 }

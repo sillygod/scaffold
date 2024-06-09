@@ -11,6 +11,7 @@ import (
 
 	"{{ cookiecutter.project_name }}/config"
 	"{{ cookiecutter.project_name }}/db"
+	"{{ cookiecutter.project_name }}/internal/app"
 	"{{ cookiecutter.project_name }}/routers"
 	"{{ cookiecutter.project_name }}/routers/handlers"
 
@@ -20,11 +21,15 @@ import (
 	"go.uber.org/zap"
 )
 
-func NewLogger() *zap.SugaredLogger {
-	logger, _ := zap.NewProduction()
-	return logger.Sugar()
-}
-
+// NewHTTPServer creates and returns a new HTTP server.
+//
+// It takes in the following parameters:
+// - lc: an instance of fx.Lifecycle
+// - sugar: a pointer to a zap.SugaredLogger
+// - vp: a pointer to a viper.Viper
+// - handler: a pointer to a chi.Mux
+//
+// It returns a pointer to an http.Server.
 func NewHTTPServer(lc fx.Lifecycle, sugar *zap.SugaredLogger, vp *viper.Viper, handler *chi.Mux) *http.Server {
 
 	server := &http.Server{
@@ -68,14 +73,6 @@ func NewHTTPServer(lc fx.Lifecycle, sugar *zap.SugaredLogger, vp *viper.Viper, h
 	return server
 }
 
-func AsRoute(f any) any {
-	return fx.Annotate(
-		f,
-		fx.As(new(handlers.Handler)),
-		fx.ResultTags(`group:"handlers"`),
-	)
-}
-
 func main() {
 	fx.New(
 		fx.Provide(
@@ -86,10 +83,10 @@ func main() {
 			),
 
 			// Register other routes here
-			AsRoute(handlers.NewUserHandler),
+			routers.AsRoute(handlers.NewUserHandler),
 		),
 
-		fx.Provide(NewLogger),
+		fx.Provide(app.NewLogger),
 		fx.Provide(db.NewSqliteDB),
 		fx.Provide(config.NewViper),
 		fx.Invoke(func(*http.Server) {}),

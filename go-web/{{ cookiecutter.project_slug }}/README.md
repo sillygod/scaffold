@@ -18,12 +18,12 @@ https://atlasgo.io/declarative/inspect#examples
 example usages
 
 ```sh
-atlas schema apply --url "sqlite://file.db"
+atlas schema apply --url "sqlite://file.db" --env local
 ```
 
 {% raw %}
 ```sh
-atlas migrate diff initial --format '{{sql . " " }}' --env local
+atlas migrate diff initial --env local
 ```
 {% endraw %}
 
