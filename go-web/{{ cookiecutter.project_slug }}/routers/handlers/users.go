@@ -24,7 +24,7 @@ func (u *UserCreationValidator) refine(ctx context.Context, r *http.Request, q *
 	}
 
 	u.Model.Name = u.Name
-	return q.CreateUser(ctx, "hi")
+	return q.CreateUser(ctx, u.Name)
 }
 
 type UserCreationComposer struct {

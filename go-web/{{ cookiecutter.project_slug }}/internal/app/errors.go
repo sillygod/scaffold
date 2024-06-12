@@ -9,23 +9,28 @@ import (
 )
 
 type MyError struct {
-	errs    validator.ValidationErrors
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	errs     validator.ValidationErrors
+	httpCode int
+	Code     int    `json:"code"`
+	Message  string `json:"message"`
 }
 
 func NewMyError(err error, code int) *MyError {
+	return NewMyErrorWithHTTPCode(err, code, http.StatusBadRequest)
+}
+
+func NewMyErrorWithHTTPCode(err error, code int, httpCode int) *MyError {
 	verr, ok := err.(validator.ValidationErrors)
 	if !ok {
 		verr = nil
 	}
 
 	msg := fmt.Sprintf("%s: %s", GetMessageFromErrorCodeMap(code), err.Error())
-	return &MyError{errs: verr, Code: code, Message: msg}
+	return &MyError{errs: verr, Code: code, Message: msg, httpCode: httpCode}
 }
 
 func (m *MyError) Error() string {
-	return fmt.Sprintf("%s: %s", m.Code, m.Message)
+	return fmt.Sprintf("%d: %s", m.Code, m.Message)
 }
 
 func RenderError(w http.ResponseWriter, err error) {
@@ -37,7 +42,7 @@ func RenderError(w http.ResponseWriter, err error) {
 		merr = NewMyError(err, ErrorCodeUnknown)
 	}
 
-	w.WriteHeader(http.StatusBadRequest)
+	w.WriteHeader(merr.httpCode)
 	json.NewEncoder(w).Encode(merr)
 }
 
