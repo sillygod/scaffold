@@ -53,7 +53,12 @@ func (u *UserHandlerTestSuite) SetupTest() {
 }
 
 func (u *UserHandlerTestSuite) TestCreateUserWithValidBody() {
-	reqBody := []byte(`{"name": "John Doe"}`)
+	reqBody := []byte(`{
+	"name": "John Doe",
+	"email": "song@test.com",
+	"password": "!@SDGsjfe",
+	"password_repeat": "!@SDGsjfe"
+	}`)
 	req := httptest.NewRequest("POST", "/users", bytes.NewBuffer(reqBody))
 	w := httptest.NewRecorder()
 	u.r.ServeHTTP(w, req)

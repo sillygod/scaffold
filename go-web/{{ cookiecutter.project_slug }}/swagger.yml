@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: {{ cookiecutter.project_name }}
+  version: '1.0'
+  x-logo:
+    url: ''
+servers:
+  - url: https://api.example.io
+paths:
+  /users:
+    summary: create user
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+            example:
+              name: song
+              email: song@test.com
+              password: '!@SDGsjfe'
+              password_repeat: '!@SDGsjfe'
+        required: true
+      tags: []
+      responses:
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicError'
+          x-last-modified: 1718368025567
+    x-last-modified: 1718354814809
+components:
+  schemas:
+    BasicError:
+      description: The basic structure for error response
+      required:
+        - message
+        - code
+      type: object
+      properties:
+        message:
+          description: The error message indicating what the issue is
+          type: string
+        code:
+          description: The http status code
+          maximum: 600
+          minimum: 100
+          type: integer
+      example:
+        code: 400
+        message: wrong input
+      x-last-modified: 1718366609889
+    CreateUserRequest:
+      required:
+        - name
+        - email
+        - password
+        - repeated_password
+      type: object
+      properties:
+        name:
+          description: user display name
+          type: string
+          x-oapi-codegen-extra-tags:
+            validate: "required,max=24"
+        email:
+          description: email address
+          type: string
+          x-oapi-codegen-extra-tags:
+            validate: "required,email,max=256"
+        password:
+          description: password
+          type: string
+        repeated_password:
+          description: repeated password
+          type: string
+      x-last-modified: 1718367921885
+  securitySchemes: {}
+  headers: {}
+  responses: {}
+  parameters: {}
+tags: []
+security: []

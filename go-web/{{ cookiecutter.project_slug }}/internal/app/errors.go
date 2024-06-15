@@ -1,6 +1,7 @@
 package app
 
 import (
+	"{{ cookiecutter.project_name }}/routers/schemas"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -9,10 +10,9 @@ import (
 )
 
 type MyError struct {
+	schemas.BasicError
 	errs     validator.ValidationErrors
 	httpCode int
-	Code     int    `json:"code"`
-	Message  string `json:"message"`
 }
 
 func NewMyError(err error, code int) *MyError {
@@ -26,7 +26,12 @@ func NewMyErrorWithHTTPCode(err error, code int, httpCode int) *MyError {
 	}
 
 	msg := fmt.Sprintf("%s: %s", GetMessageFromErrorCodeMap(code), err.Error())
-	return &MyError{errs: verr, Code: code, Message: msg, httpCode: httpCode}
+	return &MyError{
+		errs:     verr,
+		httpCode: httpCode,
+		BasicError: schemas.BasicError{
+			Code: code, Message: msg,
+		}}
 }
 
 func (m *MyError) Error() string {
