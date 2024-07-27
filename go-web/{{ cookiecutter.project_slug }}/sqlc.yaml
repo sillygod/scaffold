@@ -1,6 +1,19 @@
 version: "2"
 sql:
-  - engine: "sqlite"
+  # - engine: "sqlite"
+  #   queries: 
+  #    - "db/sqlc_querys/author_query.sql"
+  #    - "db/sqlc_querys/user_query.sql"
+
+  #   schema: 
+  #    - "db/schemas/author_schema.sql"
+  #    - "db/schemas/user_schema.sql"
+  #   gen:
+  #     go:
+  #       package: "db"
+  #       out: "db"
+
+  - engine: "postgresql"
     queries: 
      - "db/sqlc_querys/author_query.sql"
      - "db/sqlc_querys/user_query.sql"
@@ -8,7 +21,11 @@ sql:
     schema: 
      - "db/schemas/author_schema.sql"
      - "db/schemas/user_schema.sql"
+
     gen:
       go:
         package: "db"
         out: "db"
+        sql_package: "pgx/v5"
+
+# NOTE! These models and queries are just an example, you can delete them and create your own

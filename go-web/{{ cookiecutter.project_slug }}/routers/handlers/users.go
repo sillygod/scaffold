@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
@@ -11,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
+	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 )
 
@@ -62,7 +62,7 @@ func (u *UserCreationComposer) compose(ctx context.Context, q *db.Queries) (inte
 	return u, nil
 }
 
-func NewUserHandler(conn *sql.DB, logger *zap.SugaredLogger) *UserHandler {
+func NewUserHandler(conn *pgx.Conn, logger *zap.SugaredLogger) *UserHandler {
 
 	return &UserHandler{
 		q:        db.New(conn),

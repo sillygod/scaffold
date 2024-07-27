@@ -1,46 +1,108 @@
 package tests
 
 import (
-    "{{ cookiecutter.project_name }}/config"
-    "{{ cookiecutter.project_name }}/db"
-    "{{ cookiecutter.project_name }}/internal/app"
-    "{{ cookiecutter.project_name }}/routers"
-    "{{ cookiecutter.project_name }}/routers/handlers"
-
+	"{{ cookiecutter.project_name }}/config"
+	"{{ cookiecutter.project_name }}/db"
+	"{{ cookiecutter.project_name }}/internal/app"
+	"{{ cookiecutter.project_name }}/routers"
+	"{{ cookiecutter.project_name }}/routers/handlers"
 	"bytes"
+	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/spf13/viper"
+	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/suite"
 	"go.uber.org/fx"
 )
 
 type UserHandlerTestSuite struct {
 	suite.Suite
-	r *chi.Mux
+	r     *chi.Mux
+	fxApp *fx.App
 }
 
-func (u *UserHandlerTestSuite) SetupTest() {
-	fx.New(
+func (u *UserHandlerTestSuite) NewTestDB(lc fx.Lifecycle, cfg *config.Config) *pgx.Conn {
+	test_db := cfg.DB.NAME
+	ctx := context.Background()
+	cfg.DB.NAME = "postgres"
+
+	masterConn, err := pgx.Connect(ctx, db.GetPostgresqlDSN(cfg))
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = masterConn.Exec(ctx, "create database "+test_db)
+	if err != nil {
+		panic(err)
+	}
+
+	cfg.DB.NAME = test_db
+
+	conn, err := pgx.Connect(ctx, db.GetPostgresqlDSN(cfg))
+	if err != nil {
+		panic(err)
+	}
+
+	lc.Append(fx.Hook{
+		OnStop: func(ctx context.Context) error {
+
+			if err := conn.Close(ctx); err != nil {
+				return err
+			}
+
+			if _, err := masterConn.Exec(ctx, "drop database "+test_db); err != nil {
+				return err
+			}
+
+			return masterConn.Close(ctx)
+		},
+	})
+
+	return conn
+}
+
+func (u *UserHandlerTestSuite) SetupSuite() {
+	// temporarily hardcode the test database name
+	os.Setenv("DB_NAME", "test_db")
+
+	u.fxApp = fx.New(
 		fx.Provide(config.NewViper),
+		fx.Provide(config.NewConfig),
 		fx.Provide(app.NewLogger),
-		fx.Provide(db.NewSqliteDB),
+		fx.Provide(u.NewTestDB),
 		fx.Provide(
 			fx.Annotate(
 				routers.NewRouter,
 				fx.ParamTags(`group:"handlers"`),
 			),
 			routers.AsRoute(handlers.NewUserHandler)),
-		fx.Invoke(func(r *chi.Mux, vp *viper.Viper) {
+		fx.Invoke(func(r *chi.Mux, cfg *config.Config) {
 			u.r = r
 
-			// TODO: think a way to handle this in a better way
-			name := vp.GetString("sqlite.db")
-			migrations, err := db.Migrate("sqlite://" + name)
+			engine := cfg.DB.ENGINE
+			var dsn string
+
+			if engine == config.SQLite {
+				dsn = "sqlite://" + cfg.DB.NAME
+			}
+
+			if engine == config.Postgres {
+				dsn = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?search_path=public&sslmode=disable",
+					cfg.DB.USER,
+					cfg.DB.PASSWORD,
+					cfg.DB.HOST,
+					cfg.DB.PORT,
+					cfg.DB.NAME,
+				)
+			}
+
+			migrations, err := db.Migrate(dsn)
 			if err != nil {
 				panic(err)
 			}
@@ -50,6 +112,12 @@ func (u *UserHandlerTestSuite) SetupTest() {
 		}),
 	)
 
+	u.fxApp.Start(context.Background())
+
+}
+
+func (u *UserHandlerTestSuite) TearDownSuite() {
+	u.fxApp.Stop(context.Background())
 }
 
 func (u *UserHandlerTestSuite) TestCreateUserWithValidBody() {

@@ -7,15 +7,16 @@ services:
     build:
       dockerfile: ./dockerfiles/dev.dockerfile
     ports:
-      - "8080:8080"
+      - "${APP_PORT:-8080}:${APP_PORT:-8080}"
 
     env_file:
-      - ./env
+      - .env
 
     networks:
       - ci-{{ cookiecutter.project_name }}
     depends_on:
       - redis
+      - db
 
     volumes:
       - .:/app/
@@ -26,13 +27,27 @@ services:
     restart: always
     image: postgres:13-alpine
     volumes:
+      - ./scripts/create_postgres_db.sql:/docker-entrypoint-initdb.d/init.sql
       - db-backup-data:/var/lib/postgresql/data
     env_file:
-      - .dev
+      - .env
+
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PORT=${DB_PORT}
+
     networks:
       - ci-{{ cookiecutter.project_name }}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:${DB_PORT:-5432}"
+
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   redis:
     restart: always
@@ -42,8 +57,16 @@ services:
     networks:
       - ci-{{ cookiecutter.project_name }}
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
 
+    env_file:
+      - .env
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
   ci-{{ cookiecutter.project_name }}:

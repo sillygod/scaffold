@@ -43,6 +43,7 @@ func Flow(rctx RequestContext, refiner Refiner, f func(ctx context.Context, refi
 
 		ctx := r.Context()
 		q := rctx.q
+		w.Header().Set("Content-Type", "application/json")
 
 		if refiner != nil {
 			refinedData, err = refiner.refine(ctx, r, q)

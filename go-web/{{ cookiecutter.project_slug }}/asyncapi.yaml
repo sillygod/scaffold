@@ -1,0 +1,109 @@
+asyncapi: 3.0.0
+info:
+  title: Ping/pong example with static reply channel
+  version: 1.0.0
+  description: Requester example that initiates the request/reply pattern on a different channel than the reply is using
+
+servers:
+  production:
+    host: wss-example.com
+    protocol: wss
+    description: example websocket
+
+channels:
+  ping:
+    address: ping
+    messages:
+      ping:
+        $ref: '#/components/messages/ping'
+  pong:
+    address: pong
+    messages:
+      pong:
+        $ref: '#/components/messages/pong'
+
+  pricefeed_request:
+    address: pricefeed_request
+    messages:
+      pricefeed_request:
+        $ref: '#/components/messages/pricefeed_request'
+
+  pricefeed:
+    address: pricefeed
+    messages:
+      pricefeed:
+        $ref: '#/components/messages/pricefeed'
+
+operations:
+  pricefeedRequest:
+    action: receive 
+    channel:
+      $ref: '#/channels/pricefeed_request'
+    reply:
+      channel:
+        $ref: '#/channels/pricefeed'
+
+  pingRequest:
+    action: receive
+    channel: 
+      $ref: '#/channels/ping'
+    reply:
+      channel: 
+        $ref: '#/channels/pong'
+
+components: 
+  messages:
+    pricefeed_request:
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            const: history_pricefeed
+
+    pricefeed:
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            const: history_pricefeed
+
+          # a map of price symbols to prices
+          price_list:
+            type: array
+            items:
+              type: object
+              properties:
+                feed_id:
+                  type: string
+                  description: feed id
+                timestamps:
+                  type: array
+                  description: an array of unix timestamps
+                  items:
+                    type: integer
+                    
+                prices:
+                  type: array
+                  description: an array of prices
+                  items:
+                    type: number
+
+    ping:
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            const: ping
+    pong:
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            const: pong
+
+
+

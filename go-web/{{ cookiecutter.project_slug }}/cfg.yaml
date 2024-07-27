@@ -1,5 +1,5 @@
-package: schemas 
-output: routers/schemas/schemas.go
+package: schemas
+output: routers/schemas/schemas.gen.go
 generate:
   models: true
 output-options:

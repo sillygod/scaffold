@@ -13,13 +13,13 @@ const createUser = `-- name: CreateUser :one
 INSERT INTO users (
   name
 ) VALUES (
-  ?
+  $1
 )
 RETURNING id, name
 `
 
 func (q *Queries) CreateUser(ctx context.Context, name string) (User, error) {
-	row := q.db.QueryRowContext(ctx, createUser, name)
+	row := q.db.QueryRow(ctx, createUser, name)
 	var i User
 	err := row.Scan(&i.ID, &i.Name)
 	return i, err
@@ -27,21 +27,21 @@ func (q *Queries) CreateUser(ctx context.Context, name string) (User, error) {
 
 const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users
-WHERE id = ?
+WHERE id = $1
 `
 
-func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
-	_, err := q.db.ExecContext(ctx, deleteUser, id)
+func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
+	_, err := q.db.Exec(ctx, deleteUser, id)
 	return err
 }
 
 const getUser = `-- name: GetUser :one
 SELECT id, name FROM users
-WHERE id = ? LIMIT 1
+WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUser, id)
+func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
+	row := q.db.QueryRow(ctx, getUser, id)
 	var i User
 	err := row.Scan(&i.ID, &i.Name)
 	return i, err
@@ -53,7 +53,7 @@ ORDER BY name
 `
 
 func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listUsers)
+	rows, err := q.db.Query(ctx, listUsers)
 	if err != nil {
 		return nil, err
 	}
@@ -66,9 +66,6 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 		}
 		items = append(items, i)
 	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
@@ -77,17 +74,17 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 
 const updateUser = `-- name: UpdateUser :exec
 UPDATE users
-set name = ?
-WHERE id = ?
+set name = $1
+WHERE id = $2
 RETURNING id, name
 `
 
 type UpdateUserParams struct {
 	Name string
-	ID   int64
+	ID   int32
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {
-	_, err := q.db.ExecContext(ctx, updateUser, arg.Name, arg.ID)
+	_, err := q.db.Exec(ctx, updateUser, arg.Name, arg.ID)
 	return err
 }

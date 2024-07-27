@@ -2,6 +2,16 @@
 
 ## dev dependencies
 
+```sh
+go mod download
+```
+
+```sh
+cp .env.example .env
+```
+
+
+
 a nice database migration tool
 https://github.com/ariga/atlas
 
@@ -18,14 +28,17 @@ https://atlasgo.io/declarative/inspect#examples
 example usages
 
 ```sh
-atlas schema apply --url "sqlite://file.db" --env local
+atlas schema apply --env docker-local
 ```
 
-{% raw %}
 ```sh
-atlas migrate diff initial --env local
+atlas schema clean --env docker-local
 ```
-{% endraw %}
+
+```sh
+atlas migrate diff initial --env docker-local
+```
+
 
 a type-safe sql generator
 https://github.com/sqlc-dev/sqlc
@@ -67,4 +80,39 @@ openapi guide:  https://swagger.io/docs/specification/about
 
 ```sh
 docker run -p 8888:8080 -e SWAGGER_JSON=/app/swagger.yml -v .:/app swaggerapi/swagger-ui
+```
+
+### generate event schemas
+
+follow the schema-first design principle.
+
+https://studio.asyncapi.com/
+
+```sh
+brew install asyncapi
+go install github.com/lerenn/asyncapi-codegen/cmd/asyncapi-codegen@latest
+```
+
+asyncapi-codegen -i asyncapi.yaml -p events -o events/asyncapi.gen.go
+
+### spawn the server
+
+```sh
+make run
+```
+
+or run in docker container with docker-compose
+
+> all the prerequisites are required above can be ignored, if you are running on docker container.
+
+```sh
+docker-compose run -it --rm {{ cookiecutter.project_name }} /bin/bash
+make run
+```
+
+
+### debug when running tests
+
+```sh
+dlv test --wd . ./tests  -- -test.v
 ```

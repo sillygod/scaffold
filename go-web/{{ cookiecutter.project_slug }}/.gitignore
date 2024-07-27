@@ -11,6 +11,7 @@ public/assets/
 .vscode/
 .grifter/
 .env
+.env.test
 **/.DS_Store
 *.pid
 coverage
@@ -25,6 +26,9 @@ dist/
 generated/
 .vendor/
 main
+main-worker
+main-scheduler
+main-ws
 
 .gitsecret/keys/random_seed
 *-secret.yml
