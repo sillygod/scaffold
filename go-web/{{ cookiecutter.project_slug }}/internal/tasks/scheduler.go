@@ -1,7 +1,7 @@
 package tasks
 
 import (
-	"{{ cookiecutter.project_name }}/config"
+	"exampleproj/config"
 	"fmt"
 
 	"github.com/hibiken/asynq"

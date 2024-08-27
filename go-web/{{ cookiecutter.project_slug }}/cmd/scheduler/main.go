@@ -1,9 +1,9 @@
 package main
 
 import (
-	"{{ cookiecutter.project_name }}/config"
-	"{{ cookiecutter.project_name }}/internal/app"
-	"{{ cookiecutter.project_name }}/internal/tasks"
+	"exampleproj/config"
+	"exampleproj/internal/app"
+	"exampleproj/internal/tasks"
 
 	"github.com/hibiken/asynq"
 	"go.uber.org/fx"

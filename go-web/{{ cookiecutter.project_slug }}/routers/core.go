@@ -3,7 +3,7 @@ package routers
 import (
 	"net/http"
 
-	"{{ cookiecutter.project_name }}/routers/handlers"
+	"exampleproj/routers/handlers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"

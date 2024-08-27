@@ -1,11 +1,11 @@
 package main
 
 import (
-	"{{ cookiecutter.project_name }}/cache"
-	"{{ cookiecutter.project_name }}/config"
-	"{{ cookiecutter.project_name }}/internal/app"
-	"{{ cookiecutter.project_name }}/routers"
-	"{{ cookiecutter.project_name }}/routers/handlers"
+	"exampleproj/cache"
+	"exampleproj/config"
+	"exampleproj/internal/app"
+	"exampleproj/routers"
+	"exampleproj/routers/handlers"
 	"net/http"
 
 	"go.uber.org/fx"

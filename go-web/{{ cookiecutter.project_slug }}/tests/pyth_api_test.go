@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"{{ cookiecutter.project_name }}/config"
-	"{{ cookiecutter.project_name }}/internal/app"
+	"exampleproj/config"
+	"exampleproj/internal/app"
 	"context"
 	"fmt"
 	"testing"

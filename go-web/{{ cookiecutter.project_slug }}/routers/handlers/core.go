@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"{{ cookiecutter.project_name }}/db"
-	"{{ cookiecutter.project_name }}/internal/app"
+	"exampleproj/db"
+	"exampleproj/internal/app"
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"

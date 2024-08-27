@@ -1,7 +1,7 @@
 package app
 
 import (
-	"{{ cookiecutter.project_name }}/events"
+	"exampleproj/events"
 	"bytes"
 	"context"
 	"encoding/json"

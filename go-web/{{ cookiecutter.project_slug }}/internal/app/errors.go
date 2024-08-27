@@ -1,7 +1,7 @@
 package app
 
 import (
-	"{{ cookiecutter.project_name }}/routers/schemas"
+	"exampleproj/routers/schemas"
 	"encoding/json"
 	"fmt"
 	"net/http"

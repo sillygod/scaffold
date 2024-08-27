@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"{{ cookiecutter.project_name }}/db"
-	"{{ cookiecutter.project_name }}/routers/schemas"
+	"exampleproj/db"
+	"exampleproj/routers/schemas"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"

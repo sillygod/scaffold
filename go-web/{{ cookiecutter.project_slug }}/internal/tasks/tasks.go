@@ -1,9 +1,9 @@
 package tasks
 
 import (
-	"{{ cookiecutter.project_name }}/cache"
-	"{{ cookiecutter.project_name }}/config"
-	"{{ cookiecutter.project_name }}/internal/app"
+	"exampleproj/cache"
+	"exampleproj/config"
+	"exampleproj/internal/app"
 	"context"
 	"encoding/json"
 	"fmt"

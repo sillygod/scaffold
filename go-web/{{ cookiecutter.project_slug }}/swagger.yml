@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: {{ cookiecutter.project_name }}
+  title: exampleproj
   version: '1.0'
   x-logo:
     url: ''

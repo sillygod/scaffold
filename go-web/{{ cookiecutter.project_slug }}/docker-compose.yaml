@@ -1,9 +1,9 @@
 version: '3.9'
 services:
 
-  {{ cookiecutter.project_name }}:
+  exampleproj:
     restart: always
-    image: {{ cookiecutter.project_name }}
+    image: exampleproj 
     build:
       dockerfile: ./dockerfiles/dev.dockerfile
     ports:
@@ -13,7 +13,7 @@ services:
       - .env
 
     networks:
-      - ci-{{ cookiecutter.project_name }}
+      - ci-exampleproj
     depends_on:
       - redis
       - db
@@ -39,7 +39,7 @@ services:
       - POSTGRES_PORT=${DB_PORT}
 
     networks:
-      - ci-{{ cookiecutter.project_name }}
+      - ci-exampleproj
     ports:
       - "${DB_PORT:-5432}:${DB_PORT:-5432}"
 
@@ -55,7 +55,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - ci-{{ cookiecutter.project_name }}
+      - ci-exampleproj
     ports:
       - "${REDIS_PORT:-6379}:6379"
 
@@ -69,7 +69,7 @@ services:
       retries: 3
 
 networks:
-  ci-{{ cookiecutter.project_name }}:
+  ci-exampleproj:
     driver: bridge
 
 volumes:

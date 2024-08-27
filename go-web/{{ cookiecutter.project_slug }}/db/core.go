@@ -1,7 +1,7 @@
 package db
 
 import (
-	"{{ cookiecutter.project_name }}/config"
+	"exampleproj/config"
 	"context"
 	"database/sql"
 	"fmt"

@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"{{ cookiecutter.project_name }}/cache"
-	"{{ cookiecutter.project_name }}/events"
-	"{{ cookiecutter.project_name }}/internal/app"
+	"exampleproj/cache"
+	"exampleproj/events"
+	"exampleproj/internal/app"
 	"context"
 	"log"
 	"net/http"

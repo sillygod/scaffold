@@ -1,4 +1,4 @@
-# {{ cookiecutter.project_name }}
+# exampleproj
 
 ## dev dependencies
 
@@ -106,7 +106,7 @@ or run in docker container with docker-compose
 > all the prerequisites are required above can be ignored, if you are running on docker container.
 
 ```sh
-docker-compose run -it --rm {{ cookiecutter.project_name }} /bin/bash
+docker-compose run -it --rm exampleproj /bin/bash
 make run
 ```
 

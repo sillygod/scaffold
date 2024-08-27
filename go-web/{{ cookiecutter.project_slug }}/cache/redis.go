@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"{{ cookiecutter.project_name }}/config"
+	"exampleproj/config"
 	"context"
 	"fmt"
 
